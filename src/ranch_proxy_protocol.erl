@@ -8,6 +8,7 @@
          accept_ack/3,
          connect/5,
          recv/4,
+         recv_proxy_header/2,
          send/3,
          sendfile/6,
          setopts/3,
@@ -238,6 +239,9 @@ recv(Transport, #proxy_socket{csocket=Socket}, Length, Timeout) ->
 recv(Transport, #proxy_socket{csocket=Socket}, Length, Timeout) ->
     Transport:recv(Socket, Length, Timeout).
 -endif.
+
+recv_proxy_header(Socket, Timeout) ->
+  ranch_ssl:recv_proxy_header(Socket, Timeout).
 
 -spec send(transport(), proxy_socket(), iodata()) -> ok | {error, atom()}.
 send(Transport, #proxy_socket{csocket=Socket}, Packet) ->

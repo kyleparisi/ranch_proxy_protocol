@@ -11,6 +11,7 @@
          connect/3,
          connect/4,
          recv/3,
+         recv_proxy_header/2,
          send/2,
          sendfile/2,
          sendfile/4,
@@ -89,6 +90,13 @@ connect(Host, Port, Opts, ProxyOpts) when is_integer(Port) ->
           -> {ok, any()} | {error, closed | atom()}.
 recv(ProxySocket, Length, Timeout) ->
     ranch_proxy_protocol:recv(?TRANSPORT, ProxySocket, Length, Timeout).
+
+-spec recv_proxy_header(inet:socket(), timeout())
+      -> {ok, ranch_proxy_header:proxy_info()}
+    | {error, closed | atom()}
+    | {error, protocol_error, atom()}.
+recv_proxy_header(Socket, Timeout) ->
+  ranch_proxy_protocol:recv_proxy_header(Socket, Timeout).
 
 -spec send(proxy_socket(), iodata()) -> ok | {error, atom()}.
 send(ProxySocket, Packet) ->
